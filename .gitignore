@@ -1,2 +1,11 @@
-build/
 coverage/
+build*/*
+*~
+*.o
+*.a
+*.elf
+*.out
+*.list
+*.lst
+*.log
+README.html

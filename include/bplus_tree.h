@@ -9,7 +9,20 @@
 #include <stdint.h>
 #include <stdlib.h>
 
-#include <glib.h>
+#ifdef USE_GLIB
+#  include <glib.h>
+#else
+#  include <assert.h>
+#  include <stdbool.h>
+#  define g_assert assert
+#  define gboolean unsigned char
+#  define TRUE 1
+#  define FALSE 0
+#  define g_slice_new(type) (type *)malloc(sizeof(type))
+#  define g_slice_free(type, ptr) free(ptr)
+#  define g_return_if_fail(expr) if(!(expr)) return;
+#  define g_return_val_if_fail(expr, ret) if(!(expr)) return (ret);
+#endif
 
 #ifdef __cplusplus
 extern "C"
