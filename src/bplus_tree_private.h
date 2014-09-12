@@ -38,6 +38,9 @@ struct _BplusTree
     size_t   height;
     gboolean allow_duplicate_keys;
 
+    BplusKeyCmpFunc *key_cmp_func;
+    void *key_cmp_arg;
+
 #ifdef BPLUS_TREE_GATHER_STATS
     size_t node_count;
     size_t leaf_count;

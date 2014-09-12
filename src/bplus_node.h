@@ -22,12 +22,21 @@ struct _BplusNode
     BplusNode* parent;
 };
 
-#define bplus_key_gt(bplus_tree_m, k1, k2)  ((k1) > (k2))
-#define bplus_key_gte(bplus_tree_m, k1, k2) ((k1) >= (k2))
-#define bplus_key_lt(bplus_tree_m, k1, k2)  ((k1) < (k2))
-#define bplus_key_lte(bplus_tree_m, k1, k2) ((k1) <= (k2))
-#define bplus_key_eq(bplus_tree_m, k1, k2)  ((k1) == (k2))
-#define bplus_key_neq(bplus_tree_m, k1, k2) ((k1) != (k2))
+#define bplus_cmp_key(bplus_tree_m, k1, k2) \
+    bplus_tree_m->key_cmp_func(bplus_tree_m, (k1), (k2), bplus_tree_m->key_cmp_arg)
+
+#define bplus_key_gt(bplus_tree_m, k1, k2)  \
+    (bplus_cmp_key(bplus_tree_m, k1, k2) > 0)
+#define bplus_key_gte(bplus_tree_m, k1, k2) \
+    (bplus_cmp_key(bplus_tree_m, k1, k2) >= 0)
+#define bplus_key_lt(bplus_tree_m, k1, k2)  \
+    (bplus_cmp_key(bplus_tree_m, k1, k2) < 0)
+#define bplus_key_lte(bplus_tree_m, k1, k2) \
+    (bplus_cmp_key(bplus_tree_m, k1, k2) <= 0)
+#define bplus_key_eq(bplus_tree_m, k1, k2)  \
+    (bplus_cmp_key(bplus_tree_m, k1, k2) == 0)
+#define bplus_key_neq(bplus_tree_m, k1, k2) \
+    (bplus_cmp_key(bplus_tree_m, k1, k2) != 0)
 
 #define bplus_key_at(node_m, index_m)   (((BplusNode*) node_m)->items[(index_m)].key)
 #define bplus_key_first(node_m)         bplus_key_at(node_m, 0)

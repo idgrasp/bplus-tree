@@ -43,9 +43,10 @@ typedef struct _BplusTree     BplusTree;
 typedef struct _BplusIterator BplusIterator;
 
 typedef void (BplusForeachItemFunc)(BplusTree const* tree, BplusItem* item, void* argument);
+typedef int (BplusKeyCmpFunc)(BplusTree const* tree, BplusKey const key1, BplusKey const key2, void *arg);
 
-BplusTree* bplus_tree_new();
-BplusTree* bplus_tree_new_full(gboolean allow_duplicate_keys);
+BplusTree* bplus_tree_new(BplusKeyCmpFunc *key_cmp_func, void *arg);
+BplusTree* bplus_tree_new_full(BplusKeyCmpFunc *key_cmp_func, void *argument, gboolean allow_duplicate_keys);
 void       bplus_tree_destroy(BplusTree* tree);
 void       bplus_tree_destroy_each(BplusTree* tree, BplusForeachItemFunc* foreach, void* argument);
 

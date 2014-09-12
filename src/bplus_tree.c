@@ -18,12 +18,20 @@
 
 int bplus_tree_print(BplusTree const* const tree, char const* format, ...) __attribute__((format(printf, 2, 3)));
 
-BplusTree* bplus_tree_new()
+static int
+default_key_cmp_func(BplusTree const* tree, BplusKey const key1, BplusKey const key2, void *arg)
 {
-    return bplus_tree_new_full(1);
+    (void)tree;
+    (void)arg;
+    return (key1 > key2) - (key1 < key2);
 }
 
-BplusTree* bplus_tree_new_full(gboolean allow_duplicate_keys)
+BplusTree* bplus_tree_new(BplusKeyCmpFunc *key_cmp_func, void *arg)
+{
+    return bplus_tree_new_full(key_cmp_func, arg, TRUE);
+}
+
+BplusTree* bplus_tree_new_full(BplusKeyCmpFunc *key_cmp_func, void *arg, gboolean allow_duplicate_keys)
 {
     BplusTree* tree = malloc(sizeof(BplusTree));
 
@@ -33,6 +41,9 @@ BplusTree* bplus_tree_new_full(gboolean allow_duplicate_keys)
 
     tree->height               = 1;
     tree->allow_duplicate_keys = allow_duplicate_keys;
+
+    tree->key_cmp_func = key_cmp_func ? key_cmp_func : default_key_cmp_func;
+    tree->key_cmp_arg = arg;
 
     return tree;
 }
