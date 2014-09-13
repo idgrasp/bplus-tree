@@ -35,6 +35,23 @@ BplusValue bplus_tree_remove_first(BplusTree* tree)
     return value;
 }
 
+BplusValue bplus_tree_remove_last(BplusTree* tree)
+{
+    BplusPath    path  = { .leaf = (BplusNode*) tree->last };
+    BplusNode*   node  = (BplusNode*) path.leaf;
+    size_t const index = node->length - 1;
+
+    BplusValue value = bplus_value_last(node);
+    bplus_node_remove_at(tree, node, index, 1);
+    if (index == 0)
+        bplus_rebalance_propagate(tree, &path);
+
+    if (bplus_node_underfilled(node))
+        bplus_rebalance_underfilled(tree, &path);
+
+    return value;
+}
+
 BplusValue bplus_tree_remove(BplusTree* tree, BplusKey const key)
 {
     BplusPath path;
@@ -57,4 +74,10 @@ BplusValue bplus_tree_remove(BplusTree* tree, BplusKey const key)
     }
 
     return NULL;
+}
+
+void bplus_tree_remove_value(BplusTree* tree, BplusKey const key, BplusValue const value)
+{
+    g_assert(false);
+    /* TODO */
 }

@@ -112,6 +112,20 @@ BplusIterator* bplus_tree_first(BplusTree const* tree)
     return bplus_iterator_new(tree);
 }
 
+BplusIterator* bplus_tree_last(BplusTree const* tree)
+{
+    g_return_val_if_fail(tree != NULL, NULL);
+
+    BplusIterator* iterator =
+            bplus_iterator_new_full(tree, tree->first, tree->first->node.items, tree->last,
+                                    tree->last->node.items + tree->last->node.length);
+
+    iterator->item = tree->last->node.items + tree->last->node.length - 1;
+    iterator->leaf = tree->last;
+
+    return iterator;
+}
+
 BplusIterator* bplus_iterator_from_key(BplusTree const* tree, BplusKey const key)
 {
     g_return_val_if_fail(tree != NULL, NULL);

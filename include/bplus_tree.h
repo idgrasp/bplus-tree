@@ -53,6 +53,7 @@ void       bplus_tree_destroy_each(BplusTree* tree, BplusForeachItemFunc* foreac
 void       bplus_tree_insert(BplusTree* tree, BplusKey const key, BplusValue const value);
 BplusValue bplus_tree_remove(BplusTree* tree, BplusKey const key);
 BplusValue bplus_tree_remove_first(BplusTree* tree);
+BplusValue bplus_tree_remove_last(BplusTree* tree);
 void       bplus_tree_remove_value(BplusTree* tree, BplusKey const key, BplusValue const value);
 BplusValue bplus_tree_get(BplusTree* tree, BplusKey const key);
 
@@ -65,6 +66,7 @@ gboolean         bplus_iterator_next(BplusIterator* iterator);
 gboolean         bplus_iterator_previous(BplusIterator* iterator);
 BplusItem const* bplus_iterator_get_item(BplusIterator const* iterator);
 BplusIterator*   bplus_tree_first(BplusTree const* tree);
+BplusIterator*   bplus_tree_last(BplusTree const* tree);
 BplusIterator*   bplus_iterator_from_key(BplusTree const* tree, BplusKey const key);
 BplusIterator*   bplus_iterator_to_key(BplusTree const* tree, BplusKey const key);
 BplusIterator*   bplus_iterator_for_key(BplusTree const* tree, BplusKey const key);
